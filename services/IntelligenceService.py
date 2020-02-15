@@ -13,7 +13,7 @@ class IntelligenceService:
             speech_transcription_config=self.config
         )
 
-    def transcript(self, video, timeout=600):
+    def transcript(self, video: str, timeout=600):
         operation = self.client.annotate_video(
             video,
             features=self.features,
