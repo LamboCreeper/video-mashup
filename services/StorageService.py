@@ -13,3 +13,8 @@ class StorageService:
         blob.upload_from_filename(source)
 
         return "gs://{}/{}".format(self.bucket_name, destination)
+
+    def delete(self, file: str):
+        blob = self.bucket.blob(file)
+
+        blob.delete()
