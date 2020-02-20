@@ -11,7 +11,9 @@ def create_clip(destination: str, original_video: VideoFileClip, start: float, e
             codec="libx264",
             audio_codec="aac",
             temp_audiofile="temp-audio.m4a",
-            remove_temp=True
+            remove_temp=True,
+            verbose=False,
+            logger=None
         )
 
         return clip

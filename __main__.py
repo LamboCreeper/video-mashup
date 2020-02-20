@@ -1,3 +1,4 @@
+import os
 import json
 from sys import argv
 from moviepy.video.io.VideoFileClip import VideoFileClip
@@ -5,6 +6,7 @@ from moviepy.editor import concatenate_videoclips
 
 from services.StorageService import StorageService
 from services.IntelligenceService import IntelligenceService
+from utils.empty_directory import empty_directory
 from utils.create_clip import create_clip
 from helpers.strip_punctuation import strip_punctuation
 
@@ -61,6 +63,9 @@ if len(args) == 3:
                         "end": end.seconds + end.nanos * 1e-9
                     })
 
+        if not os.path.exists("temp"):
+            os.makedirs("temp")
+
         for word in words_found:
             the_word = str(word["word"]).lower()
             start = float(word["start"])
@@ -86,7 +91,6 @@ if len(args) == 3:
 
     for given_word in sentence:
         for clip in clips:
-            print("{} {}".format(given_word, clip["word"]))
             if clip["word"] == given_word:
                 required_videos.append(clip["clip"])
 
@@ -97,10 +101,17 @@ if len(args) == 3:
         codec="libx264",
         audio_codec="aac",
         temp_audiofile="temp-audio.m4a",
-        remove_temp=True
+        remove_temp=True,
+        verbose=False,
+        logger=None
     )
 
+    # Remove the original file from Cloud Storage
+    Storage.delete(source)
+
     # Clear out the temp directory
+    empty_directory("temp")
+
     print("Done!")
 else:
     print("You must supply a source, destination and sentence.")
