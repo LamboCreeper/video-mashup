@@ -4,12 +4,12 @@ from google.cloud import videointelligence
 class IntelligenceService:
     def __init__(self, language="en-US"):
         self.client = videointelligence.VideoIntelligenceServiceClient()
-        self.features = [videointelligence.enums.Feature.SPEECH_TRANSCRIPTION]
-        self.config = videointelligence.types.SpeechTranscriptionConfig(
+        self.features = [videointelligence.Feature.SPEECH_TRANSCRIPTION]
+        self.config = videointelligence.SpeechTranscriptionConfig(
             language_code=language,
             enable_automatic_punctuation=True
         )
-        self.context = videointelligence.types.VideoContext(
+        self.context = videointelligence.VideoContext(
             speech_transcription_config=self.config
         )
 
